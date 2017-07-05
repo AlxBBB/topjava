@@ -25,14 +25,15 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 31,20,0), "Ужин", 510)
         );
         getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12,0), 2000).forEach(System.out::println);
-//        .toLocalDate();
-//        .toLocalTime();
+
+        getFilteredWithExceededV2(mealList, LocalTime.of(7, 0), LocalTime.of(12,0), 2000).forEach(System.out::println);
+
     }
 
     public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        // TODO return filtered list with correctly exceeded field
         List<UserMealWithExceed> mealWithExceedList=new ArrayList<UserMealWithExceed>();
         Map<LocalDate,Boolean> exceed=new HashMap<LocalDate,Boolean>();
+        
         mealList.stream().collect(Collectors.groupingBy(m->m.getDateTime().toLocalDate(),Collectors.summingInt(UserMeal::getCalories)))
                 .forEach((gDate,sumCl)-> exceed.put(gDate, sumCl > caloriesPerDay));
 
@@ -41,4 +42,20 @@ public class UserMealsUtil {
 
         return mealWithExceedList;
     }
+    public static List<UserMealWithExceed>  getFilteredWithExceededV2(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+        List<UserMealWithExceed> mealWithExceedList=new ArrayList<UserMealWithExceed>();
+        Map<LocalDate,Integer> exceed=new HashMap<LocalDate,Integer>();
+        for (UserMeal userMeal:mealList) {
+             exceed.put(userMeal.getDateTime().toLocalDate(),
+                   exceed.getOrDefault(userMeal.getDateTime().toLocalDate(),0)+userMeal.getCalories());
+         }
+        for (UserMeal userMeal:mealList) {
+            if (TimeUtil.isBetween(userMeal.getDateTime().toLocalTime(),startTime,endTime)) {
+                mealWithExceedList.add(new UserMealWithExceed(userMeal.getDateTime(), userMeal.getDescription(),
+                                       userMeal.getCalories(), exceed.get(userMeal.getDateTime().toLocalDate())>caloriesPerDay));
+            }
+        }
+        return mealWithExceedList;
+    }
+
 }
