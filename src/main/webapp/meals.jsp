@@ -12,10 +12,15 @@
 <html>
 
 
-    <title>Meals</title>
+    <title>Список еды</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 <body>
-<header>Список еды</header>
+<div align="center">
+    <h1>Список еды</h1>
+</div>
+<div class="header">
+    Просто текст
+</div>
 <div>
     <table>
         <tr>

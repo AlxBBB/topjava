@@ -10,3 +10,15 @@ td {border: 1px solid grey;}
 .exceed {border: 1px solid grey;
     color: red;}
 .num_td {text-align: right}
+
+.tbldiv {
+         background-color: red;
+         font-style: italic;}
+.header {
+    background-color: darkslateblue;
+    height: 177px;
+    font-size: 0.8em;
+    margin-left: 0px;
+    margin-right: 0px;
+    min-width: 900px;
+}
