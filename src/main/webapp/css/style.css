@@ -1,15 +1,15 @@
 table {
     border: 1px solid gray;
     border-collapse: collapse;
-    margin: auto}
+    margin: auto;
+    }
 th {border: 1px solid grey;
     background: rgba(116, 116, 116, 100);
     font-style: oblique}
 td {border: 1px solid grey;}
 
 .norm {color: green;}
-.exceed {border: 1px solid grey;
-    color: red;}
-.num_td {text-align: right}
+.exceed {color: red;}
+.num_td {text-align: right;}
 
 

@@ -18,7 +18,7 @@
 <div align="center">
     <h1>Список еды</h1>
 </div>
-<div>
+<div align="center">
     <table>
         <tr>
             <th>Наименование</th>
