@@ -18,9 +18,6 @@
 <div align="center">
     <h1>Список еды</h1>
 </div>
-<div class="header">
-    Просто текст
-</div>
 <div>
     <table>
         <tr>
