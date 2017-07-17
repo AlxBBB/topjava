@@ -44,7 +44,10 @@ public class MealServlet extends HttpServlet {
             request.setAttribute("meal", mealDAO.getById(Integer.parseInt(request.getParameter("id"))));
             request.getRequestDispatcher("/meal.jsp").forward(request, response);
         }
-
+        else if (action.equals("add")) {
+            request.setAttribute("meal", new Meal(LocalDateTime.now(),"",0));
+            request.getRequestDispatcher("/meal.jsp").forward(request, response);
+        }
 
     }
 

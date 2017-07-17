@@ -4,7 +4,7 @@ table {
     margin: auto;
     }
 th {border: 1px solid grey;
-    background: rgba(116, 116, 116, 100);
+    background: rgb(180, 180, 180);
     font-style: oblique}
 td {border: 1px solid grey;}
 

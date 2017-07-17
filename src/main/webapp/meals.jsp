@@ -10,8 +10,6 @@
 <%@ taglib prefix="javatime" uri="http://sargue.net/jsptags/time" %>
 
 <html>
-
-
     <title>Список еды</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 <body>
@@ -45,6 +43,14 @@
         </tr>
         </c:forEach>
     </table>
+    <br/>
+    <div>
+        <form action="meals" method="get">
+            <input type="hidden" name="action" value="add" />
+            <button type="submit">Добавить</button>
+        </form>
+    </div>
 </div>
+
 </body>
 </html>
