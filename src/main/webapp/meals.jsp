@@ -24,20 +24,24 @@
             <th>Наименование</th>
             <th>Время приема</th>
             <th>Калорийность</th>
+            <th></th>
+            <th></th>
         </tr>
         <c:forEach items="${meals}" var="meal">
 
         <tr class=${meal.exceed?"exceed":"norm"}>
             <td>
-                <c:out value="${meal.description}"/>
+                ${meal.description}
             </td>
             <td>
                 <javatime:format value="${meal.dateTime}" pattern="dd-MM-YYYY HH:mm" var="formatDate" />
-                <c:out value="${formatDate}"/>
+                ${formatDate}
             </td>
             <td class="num_td">
-                <c:out value="${meal.calories}"/>
+                ${meal.calories}
             </td>
+            <td><a href="meals?action=edit&id=${meal.id}">Update</a></td>
+            <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
         </tr>
         </c:forEach>
     </table>

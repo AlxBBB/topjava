@@ -10,18 +10,8 @@ import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static ru.javawebinar.topjava.model.DataStorage.getMeals;
-
 public class MealsUtil {
     public static final int CALORIES_DAY_NORM=2000;
-
-    public static void main(String[] args) {
-
-        List<MealWithExceed> mealsWithExceeded = getFilteredWithExceeded(getMeals(), LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
-        mealsWithExceeded.forEach(System.out::println);
-
-        System.out.println(getFilteredWithExceededByCycle(getMeals(), LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
-    }
 
 
     public static List<MealWithExceed> getFilteredWithExceeded(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
@@ -52,6 +42,6 @@ public class MealsUtil {
     }
 
     public static MealWithExceed createWithExceed(Meal meal, boolean exceeded) {
-        return new MealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceeded);
+        return new MealWithExceed(meal.getId(),meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceeded);
     }
 }
