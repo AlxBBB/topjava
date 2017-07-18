@@ -7,7 +7,6 @@ import ru.javawebinar.topjava.model.Meal;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,8 +17,8 @@ import static org.slf4j.LoggerFactory.getLogger;
  * Created by bukreev-a on 17.07.2017.
  */
 
-public class MealDAOImplMap implements MealDAO {
-    private static final Logger log = getLogger(MealDAOImplMap.class);
+public class MealDAOMap implements MealDAO {
+    private static final Logger log = getLogger(MealDAOMap.class);
     private static volatile Integer counter = 0;
     private static Map<Integer, Meal> meals = new ConcurrentHashMap<>();
 
@@ -47,25 +46,25 @@ public class MealDAOImplMap implements MealDAO {
 
     @Override
     public List<Meal> getList() {
-        log.debug("get list from "+meals.size()+" meals");
+        log.debug("get list from " + meals.size() + " meals");
         return new ArrayList<Meal>(meals.values());
     }
 
     @Override
     public void add(Meal meal) {
-        log.debug("Add "+meal);
+        log.debug("Add " + meal);
         meal.setId(getNextId());
         meals.put(meal.getId(), meal);
     }
 
     @Override
     public void update(Meal meal) {
-        if (meal.getId()==0) {
+        if (meal.getId() == 0) {
             log.debug("UPDATE->ADD meal");
             add(meal);
         }
-        log.debug("Update meal with id="+meal.getId());
-        meals.replace(meal.getId(),meal); //Если был удален, пока редактировали, то удалили
+        log.debug("Update meal with id=" + meal.getId());
+        meals.replace(meal.getId(), meal); //Если был удален, пока редактировали, то удалили
     }
 
     @Override
@@ -75,7 +74,7 @@ public class MealDAOImplMap implements MealDAO {
 
     @Override
     public void remove(int id) {
-        log.debug("Delete meal with id="+id);
+        log.debug("Delete meal with id=" + id);
         meals.remove(id);
     }
 }

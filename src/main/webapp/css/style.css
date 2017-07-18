@@ -11,5 +11,15 @@ td {border: 1px solid grey;}
 .norm {color: green;}
 .exceed {color: red;}
 .num_td {text-align: right;}
-
+.div_block {
+    margin: auto;
+    align: center;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    background-color: gainsboro;
+    width: 400px;
+}
+input { margin: 5px;
+}
 

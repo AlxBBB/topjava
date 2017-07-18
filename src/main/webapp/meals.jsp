@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="javatime" uri="http://sargue.net/jsptags/time" %>
 
 <html>
     <title>Список еды</title>
@@ -32,22 +31,21 @@
                 ${meal.description}
             </td>
             <td>
-                <javatime:format value="${meal.dateTime}" pattern="dd-MM-YYYY HH:mm" var="formatDate" />
-                ${formatDate}
+                ${meal.dateTime.format(localDateTimeFormat)}
             </td>
             <td class="num_td">
                 ${meal.calories}
             </td>
-            <td><a href="meals?action=edit&id=${meal.id}">Update</a></td>
-            <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
+            <td><a href="meals?action=edit&id=${meal.id}">Изменить</a></td>
+            <td><a href="meals?action=delete&id=${meal.id}">Удалить</a></td>
         </tr>
         </c:forEach>
     </table>
     <br/>
     <div>
         <form action="meals" method="get">
-            <input type="hidden" name="action" value="add" />
-            <button type="submit">Добавить</button>
+            <button type="submit" name="action" value="add">Добавить</button>
+            <button type="submit" name="action" value="exit">Вернуться</button>
         </form>
     </div>
 </div>
