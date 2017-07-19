@@ -18,7 +18,7 @@
         <h1>${meal.id==0?"Новая запись":"Редактирование"}</h1>
     </div>
     <form method="POST" action='meals' name="edit" class="div_block">
-        Код : <input type="number" readonly="readonly" name="id"  value="${meal.id}" required="required" /> <br />
+        <input type="number" hidden name="id"  value="${meal.id}" /> <br />
         Описание : <input type="text" name="description"  value="${meal.description}" /> <br />
         Время <input type="datetime-local" pattern="dd-MM-yyyy HH:mm" name="dateTime"  value="${meal.dateTime}" required="required"/> <br />
         Калорийность : <input type="number" name="calories" value="${meal.calories}" required="required" /> <br />

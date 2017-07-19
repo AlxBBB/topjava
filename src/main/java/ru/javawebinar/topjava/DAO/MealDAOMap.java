@@ -19,30 +19,14 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealDAOMap implements MealDAO {
     private static final Logger log = getLogger(MealDAOMap.class);
-    private static volatile Integer counter = 0;
-    private static Map<Integer, Meal> meals = new ConcurrentHashMap<>();
+    private static Integer counter = 0;
+    private Map<Integer, Meal> meals = new ConcurrentHashMap<>();
 
-
-    static {
-        initMap(new Meal(getNextId(), LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500));
-        initMap(new Meal(getNextId(), LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000));
-        initMap(new Meal(getNextId(), LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500));
-        initMap(new Meal(getNextId(), LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000));
-        initMap(new Meal(getNextId(), LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500));
-        initMap(new Meal(getNextId(), LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510));
-        initMap(new Meal(getNextId(), LocalDateTime.of(2015, Month.JUNE, 1, 9, 30), "Завтрак", 400));
-        initMap(new Meal(getNextId(), LocalDateTime.of(2015, Month.JUNE, 1, 12, 15), "Обед", 1100));
-        initMap(new Meal(getNextId(), LocalDateTime.of(2015, Month.JUNE, 1, 19, 40), "Ужин", 450));
-    }
 
     private static synchronized int getNextId() {
         return ++counter;
     }
 
-    private static void initMap(Meal meal) {
-        meal.setId(getNextId());
-        meals.put(meal.getId(), meal);
-    }
 
     @Override
     public List<Meal> getList() {
