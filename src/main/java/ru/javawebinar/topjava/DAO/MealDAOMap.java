@@ -19,11 +19,11 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealDAOMap implements MealDAO {
     private static final Logger log = getLogger(MealDAOMap.class);
-    private static Integer counter = 0;
+    private Integer counter = 0;
     private Map<Integer, Meal> meals = new ConcurrentHashMap<>();
 
 
-    private static synchronized int getNextId() {
+    private  synchronized int getNextId() {
         return ++counter;
     }
 
