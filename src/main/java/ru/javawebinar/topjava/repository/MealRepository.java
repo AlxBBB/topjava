@@ -8,11 +8,9 @@ import java.util.List;
 public interface MealRepository {
     Meal save(Meal Meal);
 
-    boolean delete(int id);
+    Meal delete(int id);
 
     Meal get(int id);
 
-    Collection<Meal> getAll();
-
-    List<Meal> getByUser(int idUser);
+    List<Meal> getAll(int idUser);
 }

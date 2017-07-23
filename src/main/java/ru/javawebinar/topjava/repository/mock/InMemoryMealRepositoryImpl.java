@@ -31,8 +31,8 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public boolean delete(int id) {
-        return repository.remove(id) != null;
+    public Meal delete(int id) {
+        return repository.remove(id);
     }
 
     @Override
@@ -40,12 +40,10 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         return repository.get(id);
     }
 
-    @Override
-    public Collection<Meal> getAll() {
-        return repository.values();}
+
 
     @Override
-    public List<Meal> getByUser(int idUser) {
+    public List<Meal> getAll(int idUser) {
         return repository.values().stream().filter(v -> v.getUserId().equals(idUser))
                 .sorted((v, w) -> w.getDateTime().compareTo(v.getDateTime()))
                 .collect(Collectors.toList());
