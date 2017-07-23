@@ -4,11 +4,19 @@
     <title>Java Enterprise (Topjava)</title>
 </head>
 <body>
-<h3>Проект <a href="https://github.com/JavaWebinar/topjava" target="_blank">Java Enterprise (Topjava)</a></h3>
-<hr>
-<ul>
-    <li><a href="users">Users</a></li>
-    <li><a href="meals">Meals</a></li>
-</ul>
+    <h3>Проект <a href="https://github.com/JavaWebinar/topjava" target="_blank">Java Enterprise (Topjava)</a></h3>
+
+    <div>
+        <ul>
+            <li><a href="users">Users</a></li>
+        </ul>
+        <form method="post" action="users">
+            <select name="authUser">
+                <option value="1">Просто хороший человек</option>
+                <option value="2">А этот еще лучше</option>
+            </select>
+            <button name="action" value="login" type="submit">Meals</button>
+        </form>
+    </div>
 </body>
 </html>

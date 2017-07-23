@@ -10,6 +10,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 
 @Controller
@@ -19,30 +20,37 @@ public class MealRestController {
     @Autowired
     private MealService service;
 
-
-    void delete(int id, int userId)
+    public void delete(int id, int userId)
     {
         log.info("delete {} by {}", id, userId);
         service.delete(id, userId);
-    };
+    }
 
 
-    Meal get(int id, int userId ){
+    public Meal get(int id, int userId ){
         log.info("get {} by {}", id, userId);
         return service.get(id,userId);
-    };
+    }
 
-    void update(Meal meal, int userId)
+    public Meal create(Meal meal, int userId) {
+        log.info("create {}", meal);
+        checkNew(meal);
+        return service.save(meal, userId);
+    }
+
+    public void update(Meal meal, int userId)
     {
-        log.info("delete {} by {}", meal, userId);
+        log.info("update {} by {}", meal, userId);
         service.update(meal,userId);
-    };
+    }
 
-    List<Meal> getAll(int userId)
+    public List<Meal> getAll(int userId)
     {
         log.info("getAll");
         return service.getAll(userId);
-    };
+    }
+
+
 
 
 

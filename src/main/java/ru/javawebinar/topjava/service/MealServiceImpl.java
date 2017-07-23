@@ -28,8 +28,8 @@ public class MealServiceImpl implements MealService {
     @Override
     public void delete(int id, int userId) throws NotFoundException {
         //2 обращения к репозиторию, лучше не нашел
-        get(id,userId); // в get проверим на принадлежность
-        checkNotFoundWithId(repository.delete(id), id); // 2я проверка на наличие (1я get), но вдруг кто-то быстрый
+        get(id,userId); // в get проверим на принадлежность и правильность id
+        repository.delete(id); // Не стал перепроверять id.
     }
 
     @Override
@@ -51,8 +51,8 @@ public class MealServiceImpl implements MealService {
     }
 
     private static void checkNoUserID(Meal meal, int userId) {
-        if (meal.getUserId().equals(userId)) {
-            throw new NotFoundException("Access denied for userId=" + userId);
+        if (!meal.getUserId().equals(userId)) {
+            throw new NotFoundException("Access denied for userId=" + userId+" for owner="+meal.getUserId());
         }
     }
 
