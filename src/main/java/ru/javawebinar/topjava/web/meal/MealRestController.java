@@ -7,6 +7,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -44,10 +45,10 @@ public class MealRestController {
         service.update(meal,userId);
     }
 
-    public List<Meal> getAll(int userId)
+    public List<Meal> getAll(LocalDate fromDate, LocalDate toDate, int userId)
     {
         log.info("getAll");
-        return service.getAll(userId);
+        return service.getAll(fromDate,toDate,userId);
     }
 
 

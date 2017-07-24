@@ -18,7 +18,25 @@
 <body>
 <section>
     <h3><a href="index.html">Home</a></h3>
-    <h2>Meal list</h2>
+    <h2>Meal list (user = ${userId})</h2>
+    <form method="get" action="meals">
+        <table>
+            <tr>
+                <td>От даты: <input type="date" name="fromDate" value="${filter.fromDate}"></td>
+                <td>От времени: <input type="time" name="fromTime" value="${filter.fromTime}"></td>
+            </tr>
+            <tr>
+                <td>До даты: <input type="date" name="toDate" value="${filter.toDate}"></td>
+                <td>До времени: <input type="time" name="toTime" value="${filter.toTime}"></td>
+            </tr>
+            <tr>
+                <td><button type="submit" name="action" value="filter">Фильтр</button></td>
+                <td><button type="submit" name="action" value="nofilter">Сбросить</button></td>
+            </tr>
+        </table>
+
+    </form>
+
     <a href="meals?action=create">Add Meal</a>
     <hr/>
     <table border="1" cellpadding="8" cellspacing="0">
