@@ -45,8 +45,16 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     @Override
     public List<User> getAll() {
         log.info("getAll");
-        return repository.values().stream().sorted((v, w) -> v.getName().compareTo(w.getName()) != 0 ?
-                v.getName().compareTo(w.getName()) : v.getId().compareTo(w.getId())).collect(Collectors.toList());
+        //return repository.values().stream().sorted((v, w) -> v.getName().compareTo(w.getName()) != 0 ?
+        //        v.getName().compareTo(w.getName()) : v.getId().compareTo(w.getId())).collect(Collectors.toList());
+        return repository.values().stream().sorted((v, w) -> {
+            int c=v.getName().compareTo(w.getName());
+            if (c!=0) {
+                return c;
+            } else {
+                return v.getId().compareTo(w.getId());
+            }
+        }).collect(Collectors.toList());
 
     }
 
@@ -56,8 +64,7 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
         if (email!=null) {
             return null;
         }
-        List<User> fnd=repository.values().stream().filter(v->email.equals(v.getEmail())).collect(Collectors.toList());
-        return fnd.size()>0?fnd.get(0):null;
+        return repository.values().stream().filter(v->email.equals(v.getEmail())).findFirst().orElse(null);
     }
 
 

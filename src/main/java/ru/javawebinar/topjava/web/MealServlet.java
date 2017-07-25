@@ -28,6 +28,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class MealServlet extends HttpServlet {
@@ -36,7 +37,7 @@ public class MealServlet extends HttpServlet {
     ConfigurableApplicationContext appCtx;
     private MealRestController mealRestController;
 
-    private Map<Integer, DateTimeFilter> filterDateTime = new HashMap<>();
+    private Map<Integer, DateTimeFilter> filterDateTime = new ConcurrentHashMap<>();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
