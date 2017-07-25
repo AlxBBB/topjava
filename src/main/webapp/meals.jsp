@@ -18,7 +18,7 @@
 <body>
 <section>
     <h3><a href="index.html">Home</a></h3>
-    <h2>Meal list (user = ${userId})</h2>
+    <h2>Meal list</h2>
     <form method="get" action="meals">
         <table>
             <tr>

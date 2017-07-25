@@ -2,21 +2,13 @@ package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
-import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.repository.MealRepository;
-import ru.javawebinar.topjava.repository.mock.InMemoryMealRepositoryImpl;
-import ru.javawebinar.topjava.util.DateTimeFilter;
-import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,10 +17,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 
 public class MealServlet extends HttpServlet {
@@ -37,7 +27,6 @@ public class MealServlet extends HttpServlet {
     ConfigurableApplicationContext appCtx;
     private MealRestController mealRestController;
 
-    private Map<Integer, DateTimeFilter> filterDateTime = new ConcurrentHashMap<>();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -67,7 +56,8 @@ public class MealServlet extends HttpServlet {
         if (meal.isNew()) {
             mealRestController.create(meal);
         } else {
-            mealRestController.update(meal);
+            String referer=request.getHeader("referer");
+            mealRestController.update(meal,referer.indexOf("&id=")>-1?Integer.parseInt(referer.substring(referer.indexOf("&id=")+4)):0);
         }
         response.sendRedirect("meals");
     }
@@ -75,13 +65,6 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-
-        DateTimeFilter filter = filterDateTime.get(AuthorizedUser.id());
-        ;
-        if (filter == null) {
-            filter = new DateTimeFilter();
-            filterDateTime.put(AuthorizedUser.id(), filter);
-        }
 
         switch (action == null ? "all" : action) {
             case "delete":
@@ -93,34 +76,30 @@ public class MealServlet extends HttpServlet {
             case "create":
             case "update":
                 final Meal meal = "create".equals(action) ?
-                        new Meal(null,LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
+                        new Meal(null, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
                         mealRestController.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/meal.jsp").forward(request, response);
                 break;
             case "nofilter":
-                filter.setFromTime(null);
-                filter.setToTime(null);
-                filter.setFromDate(null);
-                filter.setToDate(null);
+                mealRestController.resetFilter();
                 response.sendRedirect("meals");
                 break;
             case "filter":
-                filter.setFromTime(request.getParameter("fromTime").equals("") ? null : LocalTime.parse(request.getParameter("fromTime")));
-                filter.setToTime(request.getParameter("toTime").equals("") ? null : LocalTime.parse(request.getParameter("toTime")));
-                filter.setFromDate(request.getParameter("fromDate").equals("") ? null : LocalDate.parse(request.getParameter("fromDate")));
-                filter.setToDate(request.getParameter("toDate").equals("") ? null : LocalDate.parse(request.getParameter("toDate")));
+                mealRestController.setFilter(request.getParameter("fromDate").equals("") ? null : LocalDate.parse(request.getParameter("fromDate")),
+                        request.getParameter("toDate").equals("") ? null : LocalDate.parse(request.getParameter("toDate")),
+                        request.getParameter("fromTime").equals("") ? null : LocalTime.parse(request.getParameter("fromTime")),
+                        request.getParameter("toTime").equals("") ? null : LocalTime.parse(request.getParameter("toTime"))
+                );
                 response.sendRedirect("meals");
                 break;
 
             case "all":
             default:
                 log.info("getAll");
-
-                request.setAttribute("userId", AuthorizedUser.id());
-                request.setAttribute("filter", filter);
+                request.setAttribute("filter", mealRestController.getFilter());
                 request.setAttribute("meals",
-                        MealsUtil.getFilteredWithExceeded(mealRestController.getAll(filter.takeFromDate(), filter.takeToDate()), filter.takeFromTime(),filter.takeToTime(),MealsUtil.DEFAULT_CALORIES_PER_DAY));
+                        mealRestController.getAllWithExceed());
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }

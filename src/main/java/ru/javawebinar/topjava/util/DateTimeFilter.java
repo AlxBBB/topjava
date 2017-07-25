@@ -57,4 +57,8 @@ public class DateTimeFilter {
         this.toTime = toTime;
     }
 
+    public boolean noDateFilter() {
+      return fromDate==null && toDate==null;
+    }
+
 }
