@@ -55,7 +55,7 @@ public class MealServiceImpl implements MealService {
 
     private static void checkNoUserID(Meal meal, int userId) {
         if (!meal.getUserId().equals(userId)) {
-            throw new NotFoundException("Access denied for userId=" + userId + ", meal owner=" + meal.getUserId());
+            throw new NotFoundException("Access denied for userId=" + userId);
         }
     }
 
