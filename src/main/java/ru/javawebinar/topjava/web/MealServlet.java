@@ -57,16 +57,16 @@ public class MealServlet extends HttpServlet {
         String id = request.getParameter("id");
 
 
-        Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id), AuthorizedUser.id(),
+        Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id), null,
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.valueOf(request.getParameter("calories")));
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
         if (meal.isNew()) {
-            mealRestController.create(meal, AuthorizedUser.id());
+            mealRestController.create(meal);
         } else {
-            mealRestController.update(meal, AuthorizedUser.id());
+            mealRestController.update(meal);
         }
         response.sendRedirect("meals");
     }
@@ -86,14 +86,14 @@ public class MealServlet extends HttpServlet {
             case "delete":
                 int id = getId(request);
                 log.info("Delete {}", id);
-                mealRestController.delete(id, AuthorizedUser.id());
+                mealRestController.delete(id);
                 response.sendRedirect("meals");
                 break;
             case "create":
             case "update":
                 final Meal meal = "create".equals(action) ?
-                        new Meal(AuthorizedUser.id(), LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
-                        mealRestController.get(getId(request), AuthorizedUser.id());
+                        new Meal(null,LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
+                        mealRestController.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/meal.jsp").forward(request, response);
                 break;
@@ -119,8 +119,7 @@ public class MealServlet extends HttpServlet {
                 request.setAttribute("userId", AuthorizedUser.id());
                 request.setAttribute("filter", filter);
                 request.setAttribute("meals",
-                        MealsUtil.getFilteredWithExceeded(mealRestController.getAll(filter.takeFromDate(), filter.takeToDate(),
-                                AuthorizedUser.id()), filter.takeFromTime(),filter.takeToTime(),MealsUtil.DEFAULT_CALORIES_PER_DAY));
+                        MealsUtil.getFilteredWithExceeded(mealRestController.getAll(filter.takeFromDate(), filter.takeToDate()), filter.takeFromTime(),filter.takeToTime(),MealsUtil.DEFAULT_CALORIES_PER_DAY));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }
