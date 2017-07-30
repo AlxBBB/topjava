@@ -2,7 +2,6 @@
 --DELETE FROM user_roles;
 --DELETE FROM users;
 
-
 TRUNCATE TABLE users CASCADE;
 
 ALTER SEQUENCE global_seq RESTART WITH 100000;

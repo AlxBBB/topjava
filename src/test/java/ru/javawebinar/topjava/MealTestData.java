@@ -9,7 +9,7 @@ import java.time.Month;
 import java.util.Objects;
 
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
-import static ru.javawebinar.topjava.model.BaseEntity.START_SEQ;
+
 
 public class MealTestData {
 
