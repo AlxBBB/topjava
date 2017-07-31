@@ -114,7 +114,7 @@ public class MealServiceTest {
 
     @Test
     public void update() throws Exception {
-        Meal meal = service.get(START_MEAL_SEQ, USER_ID);
+        Meal meal = new Meal(MEAL1_USER);
         meal.setDescription("Test");
         meal.setCalories(10);
         service.update(meal, USER_ID);
@@ -123,7 +123,7 @@ public class MealServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void updateStrange() throws Exception {
-        Meal meal = service.get(START_MEAL_SEQ, USER_ID);
+        Meal meal = new Meal(MEAL1_USER);
         meal.setDescription("Test");
         meal.setCalories(10);
         service.update(meal, ADMIN_ID);
