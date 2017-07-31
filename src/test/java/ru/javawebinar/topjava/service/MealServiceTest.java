@@ -62,14 +62,6 @@ public class MealServiceTest {
         Meal meal = service.get(MEAL2_USER.getId(), ADMIN_ID);
     }
 
-    @Test(expected = NotFoundException.class)
-    public void getNotFound() throws Exception {
-        try {
-            service.get(BAD_MEAL_ID, USER_ID);
-        } catch (NotFoundException e) {
-            service.get(BAD_MEAL_ID, ADMIN_ID);
-        }
-    }
 
     @Test
     public void getAll() throws Exception {
@@ -122,16 +114,16 @@ public class MealServiceTest {
 
     @Test
     public void update() throws Exception {
-        Meal meal = service.get(MEAL2_USER.getId(), USER_ID);
+        Meal meal = service.get(START_MEAL_SEQ, USER_ID);
         meal.setDescription("Test");
         meal.setCalories(10);
         service.update(meal, USER_ID);
-        MATCHER.assertEquals(meal, service.get(MEAL2_USER.getId(), USER_ID));
+        MATCHER.assertEquals(meal, service.get(START_MEAL_SEQ, USER_ID));
     }
 
     @Test(expected = NotFoundException.class)
     public void updateStrange() throws Exception {
-        Meal meal = service.get(MEAL2_USER.getId(), USER_ID);
+        Meal meal = service.get(START_MEAL_SEQ, USER_ID);
         meal.setDescription("Test");
         meal.setCalories(10);
         service.update(meal, ADMIN_ID);
