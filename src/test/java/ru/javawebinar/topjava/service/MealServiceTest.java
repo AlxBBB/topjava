@@ -97,6 +97,13 @@ public class MealServiceTest {
     }
 
     @Test
+    public void testSaveNotFound() throws Exception {
+        thrown.expect(NotFoundException.class);
+        Meal created = getCreated();
+        service.create(created, 1);
+    }
+
+    @Test
     public void testGet() throws Exception {
         Meal actual = service.get(ADMIN_MEAL_ID, ADMIN_ID);
         MATCHER.assertEquals(ADMIN_MEAL1, actual);

@@ -9,7 +9,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
+import static ru.javawebinar.topjava.util.ValidationUtil.*;
 
 @Service
 public class MealServiceImpl implements MealService {
@@ -51,6 +51,6 @@ public class MealServiceImpl implements MealService {
     @Override
     public Meal create(Meal meal, int userId) {
         Assert.notNull(meal, "meal must not be null");
-        return repository.save(meal, userId);
+        return checkNotFound(repository.save(meal, userId)," userId="+userId);
     }
 }
