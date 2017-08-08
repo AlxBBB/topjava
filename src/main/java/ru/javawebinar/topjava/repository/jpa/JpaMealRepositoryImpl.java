@@ -9,6 +9,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -27,11 +28,11 @@ public class JpaMealRepositoryImpl implements MealRepository {
             em.persist(meal);
             return meal;
         } else {
-            User oldUser =em.find(Meal.class,meal.getId()).getUser();
-            if (ref!=oldUser){
+            Meal oldMeal =em.find(Meal.class,meal.getId());
+            if (oldMeal==null||userId!=oldMeal.getUser().getId()){
                 return null;
             } else {
-                meal.setUser(oldUser);
+                meal.setUser(oldMeal.getUser());
                 return em.merge(meal);
             }
         }
@@ -40,9 +41,13 @@ public class JpaMealRepositoryImpl implements MealRepository {
     @Override
     @Transactional
     public boolean delete(int id, int userId) {
+        User ref=em.find(User.class, userId);
+        if (ref==null) {
+            return false;
+        }
         return em.createNamedQuery(Meal.DELETE)
                 .setParameter("id", id)
-                .setParameter("user", em.getReference(User.class, userId))
+                .setParameter("user_id", ref.getId())
                 .executeUpdate() != 0;
     }
 
@@ -57,15 +62,23 @@ public class JpaMealRepositoryImpl implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
+        User ref=em.find(User.class, userId);
+        if (ref==null) {
+            return new ArrayList<Meal>();
+        }
         return em.createNamedQuery(Meal.ALL_SORTED, Meal.class)
-                .setParameter("user",em.getReference(User.class, userId))
+                .setParameter("user_id",ref.getId())
                 .getResultList();
     }
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
+        User ref=em.find(User.class, userId);
+        if (ref==null) {
+            return new ArrayList<Meal>();
+        }
         return em.createNamedQuery(Meal.ALL_BETWEEN, Meal.class)
-                .setParameter("user",em.getReference(User.class, userId))
+                .setParameter("user_id",ref.getId())
                 .setParameter("start_dt",startDate)
                 .setParameter("end_dt",endDate)
                 .getResultList();
