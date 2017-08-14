@@ -28,7 +28,17 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
 
     List<Meal> findByUserIdOrderByDateTimeDesc(int userId);
 
-    List<Meal> findByDateTimeBetweenAndUserIdOrderByDateTimeDesc(LocalDateTime startdate, LocalDateTime endDate,int userId);
+    List<Meal> findByDateTimeBetweenAndUserIdOrderByDateTimeDesc(LocalDateTime startdate, LocalDateTime endDate, int userId);
+
+
+    default Meal get(int id) {
+        Meal meal = getOne(id);
+        if (meal != null) {
+            meal.getUser().getEmail();
+        }
+        return meal;
+    }
+
 
     @Query("SELECT u FROM User u WHERE u.id=:user_id")
     User getUser(@Param("user_id") int userId);

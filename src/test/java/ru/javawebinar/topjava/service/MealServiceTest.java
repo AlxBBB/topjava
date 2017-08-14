@@ -36,6 +36,10 @@ public abstract class MealServiceTest extends ServiceTest{
     @Autowired
     private MealService service;
 
+    MealService getService() {
+        return service;
+    }
+
     @Test
     public void testDelete() throws Exception {
         service.delete(MEAL1_ID, USER_ID);

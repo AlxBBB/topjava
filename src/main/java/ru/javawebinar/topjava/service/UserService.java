@@ -21,4 +21,6 @@ public interface UserService {
     void evictCache();
 
     List<User> getAll();
+
+    User getWithMeal(int id) throws UnsupportedOperationException;
 }

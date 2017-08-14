@@ -66,4 +66,9 @@ public class UserServiceImpl implements UserService {
     public void evictCache() {
         // only for evict cache
     }
+
+    @Override
+    public User getWithMeal(int id) throws UnsupportedOperationException {
+        return checkNotFoundWithId(repository.getWithMeal(id), id);
+    }
 }
