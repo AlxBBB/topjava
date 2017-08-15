@@ -26,7 +26,7 @@ public abstract class UserServiceTest extends ServiceTest{
 
 
     @Autowired
-    private UserService service;
+    UserService service;
 
 
     @Before
@@ -34,9 +34,7 @@ public abstract class UserServiceTest extends ServiceTest{
         service.evictCache();
     }
 
-    UserService getService() {
-        return service;
-    }
+
 
     @Test
     public void testCreate() throws Exception {

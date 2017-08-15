@@ -34,11 +34,7 @@ public abstract class MealServiceTest extends ServiceTest{
 
 
     @Autowired
-    private MealService service;
-
-    MealService getService() {
-        return service;
-    }
+    MealService service;
 
     @Test
     public void testDelete() throws Exception {

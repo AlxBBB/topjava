@@ -25,19 +25,8 @@ public class JdbcMealRepositoryImplPostgres extends JdbcMealRepositoryImpl {
     }
 
     @Override
-    public MapSqlParameterSource getSaveMap(Meal meal, int userId) {
-        return   new MapSqlParameterSource()
-                .addValue("id", meal.getId())
-                .addValue("description", meal.getDescription())
-                .addValue("calories", meal.getCalories())
-                .addValue("date_time", meal.getDateTime())
-                .addValue("user_id", userId);
+    public LocalDateTime getParamDate(LocalDateTime localDateTime) {
+        return localDateTime;
     }
 
-    @Override
-    public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM meals WHERE user_id=?  AND date_time BETWEEN  ? AND ? ORDER BY date_time DESC",
-                ROW_MAPPER, userId, startDate, endDate);
-    }
 }
