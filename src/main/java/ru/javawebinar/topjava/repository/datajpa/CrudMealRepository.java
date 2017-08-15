@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -32,16 +31,15 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
     List<Meal> findByDateTimeBetweenAndUserIdOrderByDateTimeDesc(LocalDateTime startdate, LocalDateTime endDate, int userId);
 
 
-    default Meal get(int id) {
-        Meal meal = getOne(id);
-        if (meal != null) {
-            meal.getUser().getEmail();
-        }
-        return meal;
-    }
+    //возможно fetch лишнее
+    @Query("SELECT m FROM Meal m JOIN FETCH User u ON m.user.id=u.id WHERE m.id=:id and m.user.id=:user_id")
+    Meal get(@Param("id") int id, @Param("user_id") int userId);
 
 
     @Query("SELECT u FROM User u WHERE u.id=:user_id")
     User getUser(@Param("user_id") int userId);
+
+    //User findOne(Integer integer)
+
 
 }

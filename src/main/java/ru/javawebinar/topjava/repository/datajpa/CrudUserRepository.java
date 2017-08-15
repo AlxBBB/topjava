@@ -1,15 +1,14 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
+
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.User;
 
-import java.util.Comparator;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -28,13 +27,8 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     @Override
     User findOne(Integer integer);
 
-    default User get(Integer id) {
-        User user = findOne(id);
-        if (user != null) {
-            user.getMeals().sort(Comparator.comparing(Meal::getDateTime).reversed());
-        }
-        return user;
-    }
+    @Query("SELECT u FROM User u LEFT JOIN FETCH Meal m ON m.user.id=u.id WHERE u.id=:id")
+    User get(@Param("id") Integer id);
 
     @Override
     List<User> findAll(Sort sort);

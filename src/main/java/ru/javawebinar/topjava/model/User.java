@@ -56,6 +56,7 @@ public class User extends AbstractNamedEntity {
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @org.hibernate.annotations.OrderBy(clause = "dateTime desc")
     private List<Meal> meals;
 
 

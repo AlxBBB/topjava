@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.time.LocalDateTime;
@@ -22,7 +21,6 @@ public class DataJpaMealRepositoryImpl implements MealRepository {
         if (!meal.isNew() && get(meal.getId(), userId) == null) {
             return null;
         }
-
         meal.setUser(crudRepository.getUser(userId));
         return crudRepository.save(meal);
     }
@@ -54,10 +52,10 @@ public class DataJpaMealRepositoryImpl implements MealRepository {
     @Override
     @Transactional
     public Meal getWithUser(int id, int userId) {
-        Meal gmeal = crudRepository.get(id);
-        if (gmeal == null || gmeal.getUser().getId() != userId) {
-            return null;
+        Meal meal=crudRepository.get(id,userId);
+        if (meal!=null) {
+            meal.getUser().getEmail();
         }
-        return gmeal;
+        return meal;
     }
 }
