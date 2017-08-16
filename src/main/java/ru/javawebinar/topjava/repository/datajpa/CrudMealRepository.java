@@ -39,7 +39,6 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
     @Query("SELECT u FROM User u WHERE u.id=:user_id")
     User getUser(@Param("user_id") int userId);
 
-    //User findOne(Integer integer)
 
 
 }
