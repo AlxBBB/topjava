@@ -136,6 +136,8 @@ public class User extends AbstractNamedEntity {
         return meals;
     }
 
+    public boolean addRole(Set<Role> role) {return roles.addAll(role);}
+
     @Override
     public String toString() {
         return "User{" +
