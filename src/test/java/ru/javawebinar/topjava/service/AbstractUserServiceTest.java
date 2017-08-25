@@ -25,18 +25,10 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Autowired(required = false)
     protected JpaUtil jpaUtil;
 
-    @Autowired
-    private Environment environment;
 
 
-    private boolean isActiveProfile(String profile) {
-        for (String profileIt : environment.getActiveProfiles()) {
-            if (profile.equals(profileIt)) {
-                return true;
-            }
-        }
-        return false;
-    }
+
+
 
     @Before
     public void setUp() throws Exception {
