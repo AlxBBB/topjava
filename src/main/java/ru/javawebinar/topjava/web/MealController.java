@@ -13,6 +13,7 @@ import ru.javawebinar.topjava.web.meal.AbstractMealController;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -34,13 +35,11 @@ public class MealController  extends AbstractMealController{
     }
 
     @RequestMapping(value = "/meals/filter", method = RequestMethod.POST)
-    public String between(@RequestParam("startDate") String startDate,
-                          @RequestParam("endDate") String endDate,
-                          @RequestParam("startTime") String startTime,
-                          @RequestParam("endTime") String endTime,
-                          Model model) {
-        model.addAttribute("meals", getBetween(parseLocalDate(startDate), parseLocalTime(startTime),
-                parseLocalDate(endDate), parseLocalTime(endTime)));
+    public String between(HttpServletRequest request, Model model) {
+        model.addAttribute("meals", getBetween(parseLocalDate(request.getParameter("startDate")),
+                parseLocalTime(request.getParameter("startTime")),
+                parseLocalDate(request.getParameter("endDate")),
+                parseLocalTime(request.getParameter("endTime"))));
         return "/meals";
     }
 
@@ -60,13 +59,13 @@ public class MealController  extends AbstractMealController{
     }
 
     @RequestMapping(value = "/meals/save", method = RequestMethod.POST)
-    public String save(@RequestParam("id") Integer id, @RequestParam("dateTime") String dateTime,
-                       @RequestParam("description") String description, @RequestParam("calories") Integer calories, Model model) {
-        Meal meal = new Meal(LocalDateTime.parse(dateTime), description, calories);
-        if (id == null) {
+    public String save(HttpServletRequest request) {
+        Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
+                request.getParameter("description"), Integer.parseInt(request.getParameter("calories")));
+        if (request.getParameter("id") == "") {
             create(meal);
         } else {
-            update(meal, id);
+            update(meal, Integer.valueOf(request.getParameter("id")));
         }
         return "redirect:/meals";
     }
