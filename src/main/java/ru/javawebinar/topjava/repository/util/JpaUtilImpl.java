@@ -1,22 +1,24 @@
-package ru.javawebinar.topjava.repository;
+package ru.javawebinar.topjava.repository.util;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.context.annotation.Profile;
+import ru.javawebinar.topjava.Profiles;
+import ru.javawebinar.topjava.repository.util.JpaUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-public class JpaUtil {
+
+public class JpaUtilImpl implements JpaUtil {
 
     @PersistenceContext
     private EntityManager em;
 
+    @Override
     public void clear2ndLevelHibernateCache() {
         Session s = (Session) em.getDelegate();
         SessionFactory sf = s.getSessionFactory();
-//        sf.evict(User.class);
-//        sf.getCache().evictEntity(User.class, BaseEntity.START_SEQ);
-//        sf.getCache().evictEntityRegion(User.class);
         sf.getCache().evictAllRegions();
     }
 }
