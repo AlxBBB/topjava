@@ -37,7 +37,7 @@
             <th><spring:message code="meal.colDate"/></th>
             <th><spring:message code="meal.colDescription"/></th>
             <th><spring:message code="meal.colCalories"/></th>
-            <th colspan="2">Action</th>
+            <th colspan="2"><spring:message code="meal.action"/></th>
         </tr>
         </thead>
         <c:forEach items="${meals}" var="meal">

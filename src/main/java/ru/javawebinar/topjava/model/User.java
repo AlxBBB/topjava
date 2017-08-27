@@ -75,7 +75,7 @@ public class User extends AbstractNamedEntity {
         this.password = password;
         this.caloriesPerDay = caloriesPerDay;
         this.enabled = enabled;
-        this.roles = (roles==null||roles.size()==0)? Collections.emptySet():EnumSet.copyOf(roles);
+        this.roles = (roles==null||roles.size()==0)?EnumSet.noneOf(Role.class):EnumSet.copyOf(roles);
     }
 
     public String getEmail() {
@@ -127,18 +127,35 @@ public class User extends AbstractNamedEntity {
     }
 
     public boolean addRole(Set<Role> role) {
+        if (role.isEmpty()) {
+            return false;
+        }
+        if (roles==null) {
+            roles=EnumSet.copyOf(role);
+            return roles.size()==role.size();
+        }
         return roles.addAll(role);
     }
 
     public boolean addRole(Role role) {
+        if (roles==null) {
+            roles=EnumSet.of(role);
+            return roles.size()==1;
+        }
         return roles.add(role);
     }
 
     public boolean delRole(Role role) {
+        if (roles==null) {
+            return false;
+        }
         return roles.remove(role);
     }
 
     public boolean delRole(Set<Role> role) {
+        if (roles==null) {
+            return false;
+        }
         return roles.removeAll(role);
     }
 

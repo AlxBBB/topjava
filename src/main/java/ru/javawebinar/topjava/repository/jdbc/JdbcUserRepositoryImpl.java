@@ -1,11 +1,9 @@
 package ru.javawebinar.topjava.repository.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.*;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -16,7 +14,6 @@ import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
 import javax.sql.DataSource;
-import java.lang.ref.SoftReference;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,9 +25,25 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     private static final String ADD_ROLES = "INSERT INTO user_roles (user_id, role) VALUES(?,?)";
     private static final String DEL_ROLES = "DELETE FROM user_roles WHERE user_id=? AND role=?";
 
-
-
-
+    private static final ResultSetExtractor<List<User>> usersExtractor = new ResultSetExtractor<List<User>>() {
+        @Override
+        public List<User> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<User> users = new ArrayList<>();
+            User workUser = null;
+            while (rs.next()) {
+                if (workUser == null || workUser.getId() != rs.getInt("id")) {
+                    User user = new User(rs.getInt("id"), rs.getString("name"), rs.getString("email"),
+                            rs.getString("password"), rs.getInt("calories_per_day"), rs.getBoolean("enabled"),
+                            rs.getString("role") == null ? EnumSet.noneOf(Role.class) : EnumSet.of(Role.valueOf(rs.getString("role"))));
+                    users.add(user);
+                    workUser = user;
+                } else {
+                    workUser.addRole(Role.valueOf(rs.getString("role")));
+                }
+            }
+            return users;
+        }
+    };
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -66,10 +79,9 @@ public class JdbcUserRepositoryImpl implements UserRepository {
                 Set<Role> newRoles = user.getRoles().size() == 0 ? Collections.emptySet() : EnumSet.copyOf(user.getRoles());
                 newRoles.removeAll(oldUser.getRoles());
 
-                changeRoles(DEL_ROLES, user.getId(), oldRoles);
                 changeRoles(ADD_ROLES, user.getId(), newRoles);
+                changeRoles(DEL_ROLES, user.getId(), oldRoles);
                 // План 2 и его варианты  - удалить все роли и вставить заново, понравился меньше
-
 
                 namedParameterJdbcTemplate.update(
                         "UPDATE users SET name=:name, email=:email, password=:password, " +
@@ -105,25 +117,20 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public User get(int id) {
-
-        List<User> users = jdbcTemplate.query("SELECT * FROM users u LEFT JOIN user_roles r ON u.id = r.user_id WHERE id=?", ROW_MAPPER, id);
+        List<User> users = jdbcTemplate.query("SELECT * FROM users u LEFT JOIN user_roles r ON u.id = r.user_id WHERE id=?", usersExtractor, id);
         return DataAccessUtils.singleResult(users);
     }
 
     @Override
     public User getByEmail(String email) {
-
-        List<User> users = jdbcTemplate.query("SELECT * FROM users u LEFT JOIN user_roles r ON u.id = r.user_id WHERE email=?", ROW_MAPPER, email);
+        List<User> users = jdbcTemplate.query("SELECT * FROM users u LEFT JOIN user_roles r ON u.id = r.user_id WHERE email=?", usersExtractor, email);
         return DataAccessUtils.singleResult(users);
     }
 
-
     @Override
     public List<User> getAll() {
-        List<User> users = jdbcTemplate.query("SELECT * FROM users u LEFT JOIN user_roles r ON u.id = r.user_id ORDER BY name, email", ROW_MAPPER);
-        return users;
+        return jdbcTemplate.query("SELECT * FROM users u LEFT JOIN user_roles r ON u.id = r.user_id ORDER BY name, email", usersExtractor);
     }
-
 
     public List<User> getAllVer2() {
         List<User> rowMapperUsers = new ArrayList<>();
@@ -131,30 +138,14 @@ public class JdbcUserRepositoryImpl implements UserRepository {
             if (rowNum == 0 || rowMapperUsers.get(rowMapperUsers.size() - 1).getId() != resultSet.getInt("id")) {
                 User user = new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("email"),
                         resultSet.getString("password"), resultSet.getInt("calories_per_day"), resultSet.getBoolean("enabled"),
-                        resultSet.getString("role") == null ? Collections.emptySet() : EnumSet.of(Role.valueOf(resultSet.getString("role"))));
+                        resultSet.getString("role") == null ? EnumSet.noneOf(Role.class) : EnumSet.of(Role.valueOf(resultSet.getString("role"))));
                 rowMapperUsers.add(user);
             } else {
                 rowMapperUsers.get(rowMapperUsers.size() - 1).addRole(Role.valueOf(resultSet.getString("role")));
             }
             return null;
         };
-        List<User> users = jdbcTemplate.query("SELECT * FROM users u LEFT JOIN user_roles r ON u.id = r.user_id ORDER BY name, email", myROW_MAPPER);
+        jdbcTemplate.query("SELECT * FROM users u LEFT JOIN user_roles r ON u.id = r.user_id ORDER BY name, email", myROW_MAPPER);
         return rowMapperUsers;
     }
-
-/*
-    private List<User> shrink(List<User> users) {
-        User workUser = null;
-        for (Iterator it = users.iterator(); it.hasNext(); ) {
-            User curUser = (User) it.next();
-            if (workUser == null || !workUser.getId().equals(curUser.getId())) {
-                workUser = curUser;
-            } else {
-                workUser.addRole(curUser.getRoles());
-                it.remove();
-            }
-        }
-        return users;
-    }
-*/
 }
