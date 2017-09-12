@@ -1,12 +1,14 @@
 function makeEditable() {
     $(".delete").click(function () {
-        deleteRow($(this).attr("id"));
+        deleteRow($(this).closest("tr").attr("id"));
     });
+
 
     $("#detailsForm").submit(function () {
         save();
         return false;
     });
+
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
@@ -14,6 +16,8 @@ function makeEditable() {
 
     // solve problem with cache in IE: https://stackoverflow.com/a/4303862/548473
     $.ajaxSetup({cache: false});
+
+    customSet();
 }
 
 function add() {
@@ -33,7 +37,8 @@ function deleteRow(id) {
 }
 
 function updateTable() {
-    $.get(ajaxUrl, function (data) {
+
+    $.get(getUrl(), function (data) {
         datatableApi.clear().rows.add(data).draw();
     });
 }

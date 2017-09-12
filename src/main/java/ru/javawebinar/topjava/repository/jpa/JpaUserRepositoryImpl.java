@@ -9,6 +9,7 @@ import ru.javawebinar.topjava.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -36,6 +37,15 @@ public class JpaUserRepositoryImpl implements UserRepository {
         } else {
             return em.merge(user);
         }
+    }
+
+    @Override
+    @Transactional
+    public boolean setEnabled(int id, boolean enabled) {
+        Query query = em.createQuery("UPDATE User u SET u.enabled=:enabled WHERE u.id=:id");
+        return query.setParameter("id", id)
+                    .setParameter("enabled",enabled)
+                    .executeUpdate() != 0;
     }
 
     @Override

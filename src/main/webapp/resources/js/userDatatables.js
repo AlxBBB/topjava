@@ -40,3 +40,26 @@ $(function () {
     });
     makeEditable();
 });
+
+function getUrl() {
+    return ajaxUrl;
+}
+
+function customSet() {
+    $("#datatable :checkbox").click(function () {
+        onOffRow($(this).closest("tr").attr("id"));
+    });
+}
+
+function onOffRow(id) {
+    var enabled=$("#"+id+" :checkbox").attr("checked") != 'checked';
+   // alert(enabled+" "+id);
+    $.ajax({
+        url: ajaxUrl +"enabled/"+ id+"/"+enabled,
+        type: "POST",
+        success: function () {
+            updateTable();
+            successNoty("Check");
+        }
+    });
+}

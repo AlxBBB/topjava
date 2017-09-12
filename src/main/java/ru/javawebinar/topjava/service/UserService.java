@@ -18,6 +18,8 @@ public interface UserService {
 
     void update(User user);
 
+    void setEnabled(int id, boolean enabled);
+
     void evictCache();
 
     List<User> getAll();

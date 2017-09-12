@@ -31,6 +31,18 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
         return repository.remove(id) != null;
     }
 
+
+    @Override
+    public boolean setEnabled(int id, boolean enabled) {
+        User user=repository.get(id);
+        if (user==null) {
+            return false;
+        }
+        user.setEnabled(enabled);
+        repository.put(id,user);
+        return true;
+    }
+
     @Override
     public User get(int id) {
         return repository.get(id);

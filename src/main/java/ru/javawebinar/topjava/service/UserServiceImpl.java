@@ -37,6 +37,12 @@ public class UserServiceImpl implements UserService {
         checkNotFoundWithId(repository.delete(id), id);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
+    @Override
+    public void setEnabled(int id, boolean enabled) {
+        checkNotFoundWithId(repository.setEnabled(id,enabled), id);
+    }
+
     @Override
     public User get(int id) throws NotFoundException {
         return checkNotFoundWithId(repository.get(id), id);

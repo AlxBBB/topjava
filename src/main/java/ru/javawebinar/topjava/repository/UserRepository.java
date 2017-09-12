@@ -7,16 +7,19 @@ import java.util.List;
 public interface UserRepository {
     User save(User user);
 
+    boolean setEnabled(int id, boolean enabled);
+
     // false if not found
     boolean delete(int id);
 
-    // null if not found
+        // null if not found
     User get(int id);
 
     // null if not found
     User getByEmail(String email);
 
     List<User> getAll();
+
 
     default User getWithMeals(int id){
         throw new UnsupportedOperationException();
