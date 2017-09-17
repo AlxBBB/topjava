@@ -35,3 +35,13 @@
 .glyphicon {
     cursor: pointer;
 }
+
+#startDate, #startTime, #lStartDate, #lStartTime {
+    width: 25%;
+    float: left;
+}
+
+#endDate, #endTime, #lEndDate, #lEndTime {
+    width: 25%;
+    float: left;
+}

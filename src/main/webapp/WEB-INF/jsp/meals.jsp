@@ -8,44 +8,50 @@
 <script type="text/javascript" src="resources/js/datatablesUtil.js" defer></script>
 <script type="text/javascript" src="resources/js/mealDatatables.js" defer></script>
 <jsp:include page="fragments/bodyHeader.jsp"/>
-
 <div class="jumbotron">
     <div class="container">
         <h3><spring:message code="meal.title"/></h3>
-
         <div class="row">
-            <div class="col-sm-7">
+            <div class="col-sm-6">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <form class="form-horizontal" id="filter">
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="startDate"><spring:message
+                                <label class="control-label" for="startDate" id="lStartDate"><spring:message
                                         code="meal.startDate"/>:</label>
-
-                                <div class="col-sm-4">
-                                    <input class="form-control" type="date" name="startDate" id="startDate">
+                                <div class='input-group date' name="startDate" id="startDate">
+                                    <input type='text' class="form-control" placeholder="DD/MM/YYYY"/>
+                                    <span class="input-group-addon">
+                                       <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
                                 </div>
-
-                                <label class="control-label col-sm-3" for="startTime"><spring:message
+                                <label class="control-label" for="startTime" id="lStartTime"><spring:message
                                         code="meal.startTime"/>:</label>
 
-                                <div class="col-sm-3">
-                                    <input class="form-control" type="time" name="startTime" id="startTime">
+                                <div class='input-group date' name="startTime" id="startTime">
+                                    <input type='text' class="form-control" placeholder="HH:MM"/>
+                                    <span class="input-group-addon">
+                                       <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="endDate"><spring:message
+                                <label class="control-label" for="startDate" id="lEndDate"><spring:message
                                         code="meal.endDate"/>:</label>
-
-                                <div class="col-sm-4">
-                                    <input class="form-control" type="date" name="endDate" id="endDate">
+                                <div class='input-group date' name="endDate" id="endDate">
+                                    <input type='text' class="form-control" placeholder="DD/MM/YYYY"/>
+                                    <span class="input-group-addon">
+                                       <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
                                 </div>
-
-                                <label class="control-label col-sm-3" for="endTime"><spring:message
+                                <label class="control-label" for="startTime" id="lEndTime"><spring:message
                                         code="meal.endTime"/>:</label>
 
-                                <div class="col-sm-3">
-                                    <input class="form-control" type="time" name="endTime" id="endTime">
+                                <div class='input-group date' name="endTime" id="endTime">
+                                    <input type='text' class="form-control" placeholder="HH:MM"/>
+                                    <span class="input-group-addon">
+                                       <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
                                 </div>
                             </div>
                         </form>
@@ -58,6 +64,7 @@
                             <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
                         </a>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -113,7 +120,8 @@
                                 code="meal.calories"/></label>
 
                         <div class="col-xs-9">
-                            <input type="number" class="form-control" id="calories" name="calories" placeholder="1000">
+                            <input type="number" class="form-control" id="calories" name="calories"
+                                   placeholder="1000">
                         </div>
                     </div>
                     <div class="form-group">
@@ -130,6 +138,8 @@
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
+
+
 <script type="text/javascript">
     var i18n = [];
     i18n["addTitle"] = '<spring:message code="user.add"/>';
