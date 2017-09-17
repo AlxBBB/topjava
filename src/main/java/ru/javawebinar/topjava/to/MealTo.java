@@ -18,7 +18,7 @@ public class MealTo extends BaseTo implements Serializable {
 
     @Range(min = 10, max = 5000)
     @NotNull
-    private Integer calories;
+    private Integer calories; //не int
 
     public MealTo() {
     }
@@ -53,6 +53,8 @@ public class MealTo extends BaseTo implements Serializable {
     public void setCalories(Integer calories) {
         this.calories = calories;
     }
+
+
 
     @Override
     public String toString() {
