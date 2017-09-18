@@ -5,7 +5,7 @@ function updateTable() {
     $.ajax({
         type: "POST",
         url: ajaxUrl + "filter",
-        data: $("#filter input").serialize(),
+        data: $("#filter").serialize(),
         success: updateTableByData
     });
 }
@@ -13,6 +13,24 @@ function updateTable() {
 function clearFilter() {
     $("#filter")[0].reset();
     $.get(ajaxUrl, updateTableByData);
+}
+
+function setForms() {
+    $('#startDate').datetimepicker({
+        format:'YYYY-MM-DD'
+    });
+    $('#startTime').datetimepicker({
+        format:'HH:mm:ss'
+    });
+    $('#endDate').datetimepicker({
+        format:'YYYY-MM-DD'
+    });
+    $('#endTime').datetimepicker({
+        format:'HH:mm:ss'
+    });
+    $('#dateTime').datetimepicker({
+        format:'YYYY-MM-DD HH:mm:ss'
+    });
 }
 
 $(function () {
@@ -64,6 +82,9 @@ $(function () {
                 $(row).addClass("normal");
             }
         },
-        "initComplete": makeEditable
+        "initComplete":makeEditable
     });
+    setForms();
 });
+
+

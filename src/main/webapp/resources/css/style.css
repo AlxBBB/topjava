@@ -36,12 +36,12 @@
     cursor: pointer;
 }
 
-#startDate, #startTime, #lStartDate, #lStartTime {
-    width: 25%;
+#startDate, #startTime, #endDate, #endTime {
+    width: 30%;
     float: left;
 }
 
-#endDate, #endTime, #lEndDate, #lEndTime {
-    width: 25%;
+#lStartDate, #lStartTime, #lEndDate, #lEndTime {
+    width: 20%;
     float: left;
 }

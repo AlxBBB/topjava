@@ -48,7 +48,7 @@ public class DateTimeFormatters {
 
         @Override
         public LocalDateTime parse(String text, Locale locale) throws ParseException {
-            return parseLocalDateTime(text);
+            return parseLocalDateTime(text.charAt(10)=='T'?text:text.substring(0,10)+"T"+text.substring(11));
         }
 
         @Override

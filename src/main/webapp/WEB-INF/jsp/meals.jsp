@@ -19,8 +19,8 @@
                             <div class="form-group">
                                 <label class="control-label" for="startDate" id="lStartDate"><spring:message
                                         code="meal.startDate"/>:</label>
-                                <div class='input-group date' name="startDate" id="startDate">
-                                    <input type='text' class="form-control" placeholder="DD/MM/YYYY"/>
+                                <div class='input-group date' id="startDate">
+                                    <input  name="startDate" class="form-control" placeholder="YYYY-MM-DD"/>
                                     <span class="input-group-addon">
                                        <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -28,8 +28,8 @@
                                 <label class="control-label" for="startTime" id="lStartTime"><spring:message
                                         code="meal.startTime"/>:</label>
 
-                                <div class='input-group date' name="startTime" id="startTime">
-                                    <input type='text' class="form-control" placeholder="HH:MM"/>
+                                <div class='input-group date'  id="startTime">
+                                    <input  name="startTime" class="form-control" placeholder="HH:mm:ss"/>
                                     <span class="input-group-addon">
                                        <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -38,17 +38,16 @@
                             <div class="form-group">
                                 <label class="control-label" for="startDate" id="lEndDate"><spring:message
                                         code="meal.endDate"/>:</label>
-                                <div class='input-group date' name="endDate" id="endDate">
-                                    <input type='text' class="form-control" placeholder="DD/MM/YYYY"/>
+                                <div class='input-group date' id="endDate">
+                                    <input name="endDate" class="form-control" placeholder="YYYY-MM-DD"/>
                                     <span class="input-group-addon">
                                        <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 </div>
                                 <label class="control-label" for="startTime" id="lEndTime"><spring:message
                                         code="meal.endTime"/>:</label>
-
-                                <div class='input-group date' name="endTime" id="endTime">
-                                    <input type='text' class="form-control" placeholder="HH:MM"/>
+                                <div class='input-group date'  id="endTime">
+                                    <input name="endTime" class="form-control" placeholder="HH:mm:ss"/>
                                     <span class="input-group-addon">
                                        <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -100,11 +99,13 @@
                     <div class="form-group">
                         <label for="dateTime" class="control-label col-xs-3"><spring:message
                                 code="meal.dateTime"/></label>
-
-                        <div class="col-xs-9">
-                            <input type="datetime-local" class="form-control" id="dateTime" name="dateTime"
-                                   placeholder="<spring:message code="meal.dateTime"/>">
+                        <div class='input-group date' id="dateTime">
+                            <input name="dateTime" class="form-control" placeholder="<spring:message code="meal.dateTime"/>">
+                            <span class="input-group-addon">
+                                       <span class="glyphicon glyphicon-calendar"/>
+                            </span>
                         </div>
+
                     </div>
                     <div class="form-group">
                         <label for="description" class="control-label col-xs-3"><spring:message

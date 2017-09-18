@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.TestUtil.userHttpBasic;
+import static ru.javawebinar.topjava.UserTestData.ADMIN;
 import static ru.javawebinar.topjava.UserTestData.USER;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
@@ -38,6 +39,13 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MATCHER.contentMatcher(MEAL1));
     }
+
+    @Test
+    public void testGetUnauth() throws Exception {
+        mockMvc.perform(get(REST_URL + MEAL1_ID))
+                .andExpect(status().isUnauthorized());
+    }
+
 
     @Test
     public void testDelete() throws Exception {
@@ -84,6 +92,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(JsonUtil.writeValue(MealsUtil.getWithExceeded(MEALS, USER.getCaloriesPerDay()))));
     }
+
 
     @Test
     public void testFilter() throws Exception {
