@@ -16,16 +16,10 @@ function clearFilter() {
 }
 
 function setForms() {
-    $('#startDate').datetimepicker({
+    $('#startDate, #endDate').datetimepicker({
         format:'YYYY-MM-DD'
     });
-    $('#startTime').datetimepicker({
-        format:'HH:mm:ss'
-    });
-    $('#endDate').datetimepicker({
-        format:'YYYY-MM-DD'
-    });
-    $('#endTime').datetimepicker({
+    $('#startTime, #endTime ').datetimepicker({
         format:'HH:mm:ss'
     });
     $('#dateTime').datetimepicker({

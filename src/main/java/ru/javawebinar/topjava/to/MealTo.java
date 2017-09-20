@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class MealTo extends BaseTo implements Serializable {
+public class MealTo extends BaseTo {
     @NotNull
     private LocalDateTime dateTime;
 
