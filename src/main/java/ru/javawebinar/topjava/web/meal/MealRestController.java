@@ -2,11 +2,17 @@ package ru.javawebinar.topjava.web.meal;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.javawebinar.topjava.View;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealWithExceed;
+import ru.javawebinar.topjava.util.ValidationUtil;
+import ru.javawebinar.topjava.util.exception.NotValidException;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -35,21 +41,28 @@ public class MealRestController extends AbstractMealController {
         return super.getAll();
     }
 
-    @Override
+
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@RequestBody Meal meal, @PathVariable("id") int id) {
-        super.update(meal, id);
+    public void update(@PathVariable("id") int id, @Validated(View.ValidatedRest.class) @RequestBody Meal meal, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new NotValidException(ValidationUtil.getStringBindingResult(result));
+        } else {
+            super.update(meal, id);
+        }
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Meal> createWithLocation(@RequestBody Meal meal) {
-        Meal created = super.create(meal);
+    public ResponseEntity<Meal> createWithLocation(@Validated(View.ValidatedRest.class) @RequestBody Meal meal, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new NotValidException(ValidationUtil.getStringBindingResult(result));
+        } else {
+            Meal created = super.create(meal);
 
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
-
-        return ResponseEntity.created(uriOfNewResource).body(created);
+            URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path(REST_URL + "/{id}")
+                    .buildAndExpand(created.getId()).toUri();
+            return ResponseEntity.created(uriOfNewResource).body(created);
+        }
     }
 
     @Override

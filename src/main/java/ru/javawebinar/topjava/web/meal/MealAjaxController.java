@@ -11,6 +11,7 @@ import ru.javawebinar.topjava.View;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.ValidationUtil;
+import ru.javawebinar.topjava.util.exception.NotValidException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -43,8 +44,7 @@ public class MealAjaxController extends AbstractMealController {
     @PostMapping
     public ResponseEntity<String> createOrUpdate(@Validated(View.ValidatedUI.class) Meal meal, BindingResult result) {
         if (result.hasErrors()) {
-            // TODO change to exception handler
-            return ValidationUtil.getErrorResponse(result);
+            throw new NotValidException(ValidationUtil.getStringBindingResult(result));
         }
         if (meal.isNew()) {
             super.create(meal);

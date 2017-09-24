@@ -2,10 +2,14 @@ package ru.javawebinar.topjava.web.user;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.util.ValidationUtil;
+import ru.javawebinar.topjava.util.exception.NotValidException;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -27,17 +31,16 @@ public class AdminRestController extends AbstractUserController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createWithLocation(@RequestBody User user) {
-        User created = super.create(user);
-
-//        HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.setLocation(uriOfNewResource);
-
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
-
-        return ResponseEntity.created(uriOfNewResource).body(created);
+    public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new NotValidException(ValidationUtil.getStringBindingResult(result));
+        } else {
+            User created = super.create(user);
+            URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path(REST_URL + "/{id}")
+                    .buildAndExpand(created.getId()).toUri();
+            return ResponseEntity.created(uriOfNewResource).body(created);
+        }
     }
 
     @Override
@@ -46,10 +49,13 @@ public class AdminRestController extends AbstractUserController {
         super.delete(id);
     }
 
-    @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@RequestBody User user, @PathVariable("id") int id) {
-        super.update(user, id);
+    public void update(@Valid @RequestBody User user, BindingResult result, @PathVariable("id") int id) {
+        if (result.hasErrors()) {
+            throw new NotValidException(ValidationUtil.getStringBindingResult(result));
+        } else {
+            super.update(user, id);
+        }
     }
 
     @Override

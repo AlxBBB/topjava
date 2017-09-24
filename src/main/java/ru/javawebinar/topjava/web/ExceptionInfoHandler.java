@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.util.exception.ErrorInfo;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
+import ru.javawebinar.topjava.util.exception.NotValidException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,9 +21,9 @@ public class ExceptionInfoHandler {
 
     //  http://stackoverflow.com/a/22358422/548473
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler({NotFoundException.class, NotValidException.class})
     @ResponseBody
-    public ErrorInfo handleError(HttpServletRequest req, NotFoundException e) {
+    public ErrorInfo handleError(HttpServletRequest req, RuntimeException e) {
         return logAndGetErrorInfo(req, e, false);
     }
 

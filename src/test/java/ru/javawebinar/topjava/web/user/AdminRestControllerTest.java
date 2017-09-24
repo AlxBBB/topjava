@@ -85,14 +85,30 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     public void testUpdate() throws Exception {
         User updated = new User(USER);
         updated.setName("UpdatedName");
+        updated.setPassword("pass5");
         updated.setRoles(Collections.singletonList(Role.ROLE_ADMIN));
+        // Такая фиговина. Или переделывать rest или JsonUtil
+        String jsonUser=JsonUtil.writeValue(updated).replace("}",",\"password\":\"pass5\"}");
         mockMvc.perform(put(REST_URL + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
-                .content(JsonUtil.writeValue(updated)))
+                .content(jsonUser))
                 .andExpect(status().isOk());
 
         MATCHER.assertEquals(updated, userService.get(USER_ID));
+    }
+
+    @Test
+    public void testNotValidUpdate() throws Exception {
+        User updated = new User(USER);
+        updated.setPassword("pass");
+        updated.setRoles(Collections.singletonList(Role.ROLE_ADMIN));
+        String jsonUser=JsonUtil.writeValue(updated).replace("}",",\"password\":\"pass\"}");
+        mockMvc.perform(put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(jsonUser))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -108,6 +124,15 @@ public class AdminRestControllerTest extends AbstractControllerTest {
         MATCHER.assertEquals(NEW_USER, returned);
         MATCHER.assertListEquals(Arrays.asList(ADMIN, NEW_USER, USER), userService.getAll());
     }
+
+    @Test
+    public void testNotValidCreate() throws Exception {
+        ResultActions action = mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(JSON_BAD_USER_WITH_PASSWORD)).andExpect(status().isUnprocessableEntity());
+    }
+
 
     @Test
     public void testGetAll() throws Exception {
