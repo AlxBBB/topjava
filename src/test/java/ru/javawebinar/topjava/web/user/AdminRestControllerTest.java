@@ -133,6 +133,14 @@ public class AdminRestControllerTest extends AbstractControllerTest {
                 .content(JSON_BAD_USER_WITH_PASSWORD)).andExpect(status().isUnprocessableEntity());
     }
 
+    @Test
+    public void testDoubleEmail() throws Exception {
+        ResultActions action = mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(JSON_USER_WITH_DOUBLE_EMAIL)).andExpect(status().isUnprocessableEntity());
+    }
+
 
     @Test
     public void testGetAll() throws Exception {

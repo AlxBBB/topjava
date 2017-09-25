@@ -8,6 +8,10 @@ public class ErrorInfo {
     public ErrorInfo(CharSequence url, Throwable ex) {
         this.url = url.toString();
         this.cause = ex.getClass().getSimpleName();
-        this.detail = ex.getLocalizedMessage();
+        if (ex.getLocalizedMessage().contains("meals_unique_user_datetime_idx")) {
+            this.detail = "Уже есть еда с такой датой и временем";
+        } else {
+            this.detail = ex.getLocalizedMessage();
+        }
     }
 }
