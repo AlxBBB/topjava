@@ -43,6 +43,7 @@ public class MealAjaxController extends AbstractMealController {
 
     @PostMapping
     public ResponseEntity<String> createOrUpdate(@Validated(View.ValidatedUI.class) Meal meal, BindingResult result) {
+        mealFormValidator.validate(meal,result);
         if (result.hasErrors()) {
             throw new NotValidException(ValidationUtil.getStringBindingResult(result));
         }

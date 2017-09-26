@@ -2,6 +2,8 @@ package ru.javawebinar.topjava.web.Validator;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -11,11 +13,16 @@ import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.to.UserTo;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.util.Locale;
+
 @Component
 public class UserFormValidator implements Validator {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Override
     public void validate(Object o, Errors errors) {
@@ -32,7 +39,7 @@ public class UserFormValidator implements Validator {
             }
 
             if (iD == null || !baseUser.getId().equals(iD)) {
-                errors.rejectValue("email", "valid.dublicateEmail", "valid.dublicateEmail");
+                errors.rejectValue("email", "valid.dublicateEmail", messageSource.getMessage("valid.dublicateEmail",null, LocaleContextHolder.getLocale()));
             }
 
         } catch (NotFoundException e) {

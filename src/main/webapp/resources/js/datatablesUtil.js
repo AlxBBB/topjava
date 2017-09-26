@@ -2,6 +2,7 @@ var form;
 
 function makeEditable() {
     form = $("#detailsForm");
+
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
     });

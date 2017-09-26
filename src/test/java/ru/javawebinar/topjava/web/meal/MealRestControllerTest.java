@@ -109,6 +109,19 @@ public class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void testCreateDoubleTime() throws Exception {
+        Meal created = getCreated();
+        created.setDateTime(MEAL1.getDateTime());
+        ResultActions action = mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(created))
+                .with(userHttpBasic(USER)))
+                .andExpect(status().isUnprocessableEntity());
+
+    }
+
+
+    @Test
     public void testNotValidCreate() throws Exception {
         Meal created = getCreated();
         created.setDescription("");

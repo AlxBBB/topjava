@@ -17,8 +17,10 @@
                     <button class="btn btn-primary" type="submit">
                         <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
                     </button>
+                    <%@ include file="local.jsp" %>
                 </sec:authorize>
             </form:form>
+
         </div>
     </div>
 </div>

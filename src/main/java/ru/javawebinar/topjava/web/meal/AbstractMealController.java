@@ -9,6 +9,8 @@ import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.web.Validator.MealFormValidator;
+import ru.javawebinar.topjava.web.Validator.UserFormValidator;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,6 +24,9 @@ public abstract class AbstractMealController {
 
     @Autowired
     private MealService service;
+
+    @Autowired
+    MealFormValidator mealFormValidator;
 
     public Meal get(int id) {
         int userId = AuthorizedUser.id();

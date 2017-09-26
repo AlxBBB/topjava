@@ -44,6 +44,7 @@ public class MealRestController extends AbstractMealController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void update(@PathVariable("id") int id, @Validated(View.ValidatedRest.class) @RequestBody Meal meal, BindingResult result) {
+        mealFormValidator.validate(meal,result);
         if (result.hasErrors()) {
             throw new NotValidException(ValidationUtil.getStringBindingResult(result));
         } else {
@@ -53,6 +54,7 @@ public class MealRestController extends AbstractMealController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Meal> createWithLocation(@Validated(View.ValidatedRest.class) @RequestBody Meal meal, BindingResult result) {
+        mealFormValidator.validate(meal,result);
         if (result.hasErrors()) {
             throw new NotValidException(ValidationUtil.getStringBindingResult(result));
         } else {
