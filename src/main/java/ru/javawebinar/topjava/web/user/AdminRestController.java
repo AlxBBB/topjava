@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.web.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -9,7 +8,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.util.exception.NotValidException;
-import ru.javawebinar.topjava.web.Validator.UserFormValidator;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -34,7 +32,7 @@ public class AdminRestController extends AbstractUserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user, BindingResult result) {
-        formValidate(user,result);
+        userFormValidator.validate(user,result);
         if (result.hasErrors()) {
             throw new NotValidException(ValidationUtil.getStringBindingResult(result));
         } else {
@@ -54,7 +52,7 @@ public class AdminRestController extends AbstractUserController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void update(@Valid @RequestBody User user, BindingResult result, @PathVariable("id") int id) {
-        formValidate(user,result);
+        userFormValidator.validate(user,result);
         if (result.hasErrors()) {
             throw new NotValidException(ValidationUtil.getStringBindingResult(result));
         } else {

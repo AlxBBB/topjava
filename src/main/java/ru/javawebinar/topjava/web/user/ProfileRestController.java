@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.web.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +9,6 @@ import ru.javawebinar.topjava.to.UserTo;
 import ru.javawebinar.topjava.util.UserUtil;
 import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.util.exception.NotValidException;
-import ru.javawebinar.topjava.web.Validator.UserFormValidator;
 
 import javax.validation.Valid;
 
@@ -31,7 +29,8 @@ public class ProfileRestController extends AbstractUserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void update(@Valid @RequestBody UserTo userTo, BindingResult result) {
-        formValidate(UserUtil.createNewFromTo(userTo,AuthorizedUser.id()),result);
+        //userTo.setId();
+        userFormValidator.validate(UserUtil.createNewFromTo(userTo,AuthorizedUser.id()),result);
         if (result.hasErrors()) {
             throw new NotValidException(ValidationUtil.getStringBindingResult(result));
         } else {

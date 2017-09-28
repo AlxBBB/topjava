@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.web.Validator;
+package ru.javawebinar.topjava.web.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -11,10 +11,9 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 
 import java.util.List;
-import java.util.Locale;
 
 @Component
-public class MealFormValidator implements Validator{
+public class MealFormValidator implements Validator {
 
     @Autowired
     private MealService mealService;
@@ -29,10 +28,10 @@ public class MealFormValidator implements Validator{
 
     @Override
     public void validate(Object target, Errors errors) {
-        Meal meal=(Meal) target;
-        List<Meal> list=mealService.getBetweenDateTimes(meal.getDateTime(),meal.getDateTime(), AuthorizedUser.id());
-        if (list!=null&&list.size()>0&&(meal.isNew()||!meal.getId().equals(list.get(0).getId()))) {
-            errors.rejectValue("DateTime", "valid.dublicateDateTime", messageSource.getMessage("valid.dublicateDateTime",null, LocaleContextHolder.getLocale()));
+        Meal meal = (Meal) target;
+        List<Meal> list = mealService.getBetweenDateTimes(meal.getDateTime(), meal.getDateTime(), AuthorizedUser.id());
+        if (list != null && list.size() > 0 && (meal.isNew() || !meal.getId().equals(list.get(0).getId()))) {
+            errors.rejectValue("DateTime", "valid.dublicateDateTime", messageSource.getMessage("valid.dublicateDateTime", null, LocaleContextHolder.getLocale()));
         }
     }
 }

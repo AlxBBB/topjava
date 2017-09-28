@@ -41,7 +41,7 @@ public class AdminAjaxController extends AbstractUserController {
 
     @PostMapping
     public ResponseEntity<String> createOrUpdate(@Valid UserTo userTo, BindingResult result, SessionStatus status, ModelMap model) {
-        formValidate(userTo,result);
+        userFormValidator.validate(userTo,result);
         if (result.hasErrors()) {
             throw new NotValidException(ValidationUtil.getStringBindingResult(result));
         }

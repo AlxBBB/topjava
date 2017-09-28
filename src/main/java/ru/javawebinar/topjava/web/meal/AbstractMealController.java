@@ -9,8 +9,7 @@ import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
-import ru.javawebinar.topjava.web.Validator.MealFormValidator;
-import ru.javawebinar.topjava.web.Validator.UserFormValidator;
+import ru.javawebinar.topjava.web.validator.MealFormValidator;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

@@ -7,7 +7,7 @@ import org.springframework.validation.Errors;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.to.UserTo;
-import ru.javawebinar.topjava.web.Validator.UserFormValidator;
+import ru.javawebinar.topjava.web.validator.UserFormValidator;
 
 import java.util.List;
 
@@ -21,11 +21,7 @@ public abstract class AbstractUserController {
     private UserService service;
 
     @Autowired
-    private UserFormValidator userFormValidator;
-
-    public void formValidate(Object o, Errors errors) {
-        userFormValidator.validate(o,errors);
-    }
+    public UserFormValidator userFormValidator;
 
     public List<User> getAll() {
         log.info("getAll");
